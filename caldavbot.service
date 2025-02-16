@@ -1,0 +1,16 @@
+[Unit]
+Description=Check a dav calendar and schedule messages to telegram bot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=user
+Type=forking
+WorkingDirectory=/home/user/reminderbot
+ExecStart=/home/user/caldavbot/run.sh
+Restart=on-failure
+#StandardOutput=append:/var/log/caldavbot.log
+#StandardError=append:/var/log/caldavbot.log
+
+[Install]
+WantedBy=multi-user.target
