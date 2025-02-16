@@ -1,4 +1,4 @@
-from secrets import TELEGRAM_BOT_TOKEN, CALDAV_URL, CALDAV_USERNAME, CALDAV_PASSWORD, TELEGRAM_CHAT_ID
+from secrets import TELEGRAM_BOT_TOKEN, CALDAV_URL, CALDAV_USERNAME, CALDAV_PASSWORD, TELEGRAM_CHAT_ID, CALENDAR_ID
 import caldav
 from datetime import datetime
 import logging
@@ -29,7 +29,15 @@ def fetch_calendar_events(url, username, password):
         logging.warning("No calendars found.")
         return []
 
-    calendar = calendars[0]  # Use the first calendar found
+    calendar = calendars[0]
+    # If CALENDAR_ID exists and is set on secrets.py, use it
+    if CALENDAR_ID != "":
+        # search calendar by name set on settins.py, if not found use the first one
+        for cal in calendars:
+            if cal.name == CALENDAR_ID:
+                calendar = cal
+                break
+
     logging.info(f"Using calendar: {calendar.name}")
 
     events = calendar.events()
