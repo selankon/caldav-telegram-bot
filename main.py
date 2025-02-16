@@ -98,6 +98,7 @@ async def fetch_and_schedule_events():
     events = fetch_calendar_events(CALDAV_URL, CALDAV_USERNAME, CALDAV_PASSWORD)
 
     for event in events:
+        logging.info("Scheduling event : " + event['summary'] + " at " + str(event['start_time']))
         event_key = (event['summary'], event['start_time'])
         if event_key not in scheduled_events:
             scheduled_events.add(event_key)
