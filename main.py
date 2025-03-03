@@ -83,8 +83,10 @@ async def schedule_event(event):
     now = datetime.now(pytz.UTC)
     delay = (event['start_time'] - now).total_seconds()
 
+    logging.info("Event delay " + str(delay))
+
     if delay > 0:
-        logging.info(f"Scheduling event '{event['summary']}' at {event['start_time']}")
+        logging.info(f"[*] Adding asynchio task for '{event['summary']}' at {event['start_time']}")
         await asyncio.sleep(delay)  # Wait until the event time
         if (event['summary'], event['start_time']) in scheduled_events:  # Double-check the event has not been removed
             await send_event_to_telegram(event['summary'], event['description'], event['location'])
@@ -97,12 +99,18 @@ async def fetch_and_schedule_events():
     logging.info("Fetching updated events...")
     events = fetch_calendar_events(CALDAV_URL, CALDAV_USERNAME, CALDAV_PASSWORD)
 
+    newEvents= 0
     for event in events:
-        logging.info("Scheduling event : " + event['summary'] + " at " + str(event['start_time']))
         event_key = (event['summary'], event['start_time'])
         if event_key not in scheduled_events:
+            newEvents = newEvents + 1
+            logging.info("Found new event: " + event['summary'] + " at " + str(event['start_time']))
             scheduled_events.add(event_key)
             asyncio.create_task(schedule_event(event))
+    if newEvents == 0:
+        logging.info("No new events found.")
+    else:
+        logging.info(f"Found {newEvents} new events.")
 
 
 async def main():

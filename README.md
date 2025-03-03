@@ -55,7 +55,23 @@ This Python script fetches events from a CalDAV calendar and sends reminders to 
    ```python
    REFETCH_INTERVAL = 60  # Time in seconds (e.g., 60 for 1 minute)
    ```
-
+   
+5. Add service to systemd:
+   ```bash
+   sudo cp caldavbot.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable caldavbot
+   sudo systemctl start caldavbot
+   ```
+   
+6. Optionally add a restart service timer:
+   ```bash
+   sudo cp caldavbot.timer /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable caldavbot.timer
+   sudo systemctl start caldavbot.timer
+   ```
+   
 ---
 
 ## Usage
