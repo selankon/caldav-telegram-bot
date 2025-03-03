@@ -87,6 +87,7 @@ async def schedule_event(event):
         logging.info(f"[*] Adding asynchio task for '{event['summary']}' at {event['start_time']}")
         await asyncio.sleep(delay)  # Wait until the event time
         if (event['summary'], event['start_time']) in scheduled_events:  # Double-check the event has not been removed
+            logging.info(f"[*] Sending event: '{event['summary']}' at {event['start_time']}")
             await send_event_to_telegram(event['summary'], event['description'], event['location'])
             scheduled_events.remove((event['summary'], event['start_time']))
 

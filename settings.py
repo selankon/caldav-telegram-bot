@@ -8,4 +8,4 @@ MESSAGE_TEMPLATE = """
 {location}
 """
 
-REFETCH_INTERVAL = 60  # seconds
+REFETCH_INTERVAL = 120  # seconds
