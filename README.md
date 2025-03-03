@@ -72,6 +72,11 @@ This Python script fetches events from a CalDAV calendar and sends reminders to 
    sudo systemctl start caldavbot.timer
    ```
    
+You can see active timers with:
+   ```
+   systemctl list-timer
+   ```
+
 ---
 
 ## Usage
